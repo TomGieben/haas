@@ -1,0 +1,21 @@
+@use 'variables' as v;
+
+@mixin card {
+  background: v.$color-card;
+  border-radius: v.$radius-card;
+  box-shadow: v.$shadow-card;
+}
+
+@mixin pill {
+  display: inline-flex;
+  align-items: center;
+  border-radius: v.$radius-pill;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+@mixin focus-ring {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(240, 124, 44, 0.35);
+}

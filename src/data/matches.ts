@@ -1,0 +1,48 @@
+import { Match } from '../domain/Match';
+
+export const matches: Match[] = [
+  new Match({
+    id: 'lisa',
+    name: 'Lisa',
+    age: 32,
+    profession: 'Lerares',
+    headline: 'Alleenstaande moeder zoekt rustige buurt voor gezin',
+    matchPercent: 95,
+    tags: ['Wandelen', 'Lezen', 'Tuinieren'],
+    interests: ['Wandelen', 'Lezen', 'Tuinieren', 'Koken'],
+    flags: { children: true },
+  }),
+  new Match({
+    id: 'emma',
+    name: 'Emma',
+    age: 29,
+    profession: 'Verpleegkundige',
+    headline: 'Moeder van 2 kinderen, houdt van gezelligheid',
+    matchPercent: 92,
+    tags: ['Koken', 'Yoga', 'Familie tijd'],
+    interests: ['Koken', 'Yoga', 'Familie tijd'],
+    flags: { children: true, pets: true },
+  }),
+  new Match({
+    id: 'sarah',
+    name: 'Sarah',
+    age: 35,
+    profession: 'Grafisch ontwerper',
+    headline: 'Rust zoekend in groene omgeving',
+    matchPercent: 88,
+    tags: ['Kunst', 'Wandelen', 'Fotografie'],
+    interests: ['Kunst', 'Wandelen', 'Fotografie'],
+    flags: { pets: true },
+  }),
+  new Match({
+    id: 'sophie',
+    name: 'Sophie',
+    age: 31,
+    profession: 'Accountant',
+    headline: 'Werkende moeder, waardeert balans werk-privé',
+    matchPercent: 85,
+    tags: ['Fietsen', 'Bakken', 'Sport'],
+    interests: ['Fietsen', 'Bakken', 'Sport'],
+    flags: { children: true },
+  }),
+];

@@ -1,0 +1,48 @@
+@use 'variables' as v;
+@use 'mixins' as m;
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+:root {
+  --color-navy: #{v.$color-navy};
+  --color-teal: #{v.$color-teal};
+  --color-orange: #{v.$color-orange};
+  --color-bg: #{v.$color-bg};
+}
+
+html,
+body,
+#app {
+  height: 100%;
+}
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  color: v.$color-text;
+  background: linear-gradient(180deg, #eaf3fb 0%, #e3edf7 100%);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
+}
+
+// Leaflet container baseline
+.leaflet-container {
+  font-family: inherit;
+  border-radius: v.$radius-card;
+}
