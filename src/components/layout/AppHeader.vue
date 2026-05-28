@@ -1,16 +1,45 @@
 <script setup lang="ts">
-import { ref, nextTick } from 'vue';
+import { ref, nextTick, computed } from 'vue';
+import { useRouter } from 'vue-router';
 import NavTabs from './NavTabs.vue';
+
+const router = useRouter();
 
 const notificationsOpen = ref(false);
 const searchOpen = ref(false);
 const searchInput = ref<HTMLInputElement | null>(null);
 const searchQuery = ref('');
 
+const pages = [
+  { label: 'Profiel', description: 'Jouw profiel en voorkeuren', route: '/profiel', keywords: 'profiel naam leeftijd' },
+  { label: 'Locaties', description: 'Wijken en beschikbare woningen', route: '/locaties', keywords: 'locatie wijk woning arnhem kaart' },
+  { label: 'Matches', description: 'Gevonden matches op basis van je profiel', route: '/matches', keywords: 'matches personen buurt' },
+  { label: 'Woongenoten', description: 'Swipe door mogelijke woongenoten', route: '/woongenoten', keywords: 'woongenoten swipe mensen' },
+  { label: 'Voortgang', description: 'Status van je aanvraag', route: '/voortgang', keywords: 'voortgang aanvraag status stappen' },
+];
+
+const results = computed(() => {
+  const q = searchQuery.value.trim().toLowerCase();
+  if (!q) return [];
+  return pages.filter(p =>
+    `${p.label} ${p.description} ${p.keywords}`.toLowerCase().includes(q)
+  );
+});
+
 async function openSearch() {
   searchOpen.value = true;
   await nextTick();
   searchInput.value?.focus();
+}
+
+function closeSearch() {
+  searchOpen.value = false;
+  searchQuery.value = '';
+}
+
+function navigate(route: string) {
+  router.push(route);
+  closeSearch();
 }
 
 const notification = {
@@ -47,19 +76,41 @@ function formatTime(date: Date) {
 
       <div class="flex items-center gap-3">
         <Transition name="search">
-          <div v-if="searchOpen" class="flex items-center gap-2 bg-white/10 rounded-full px-3 py-1.5">
-            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white/60 shrink-0"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-            <input
-              ref="searchInput"
-              v-model="searchQuery"
-              type="text"
-              placeholder="Zoeken..."
-              class="bg-transparent text-sm text-white placeholder-white/50 outline-none w-40"
-              @keydown.escape="searchOpen = false; searchQuery = ''"
-            />
-            <button @click="searchOpen = false; searchQuery = ''" class="text-white/50 hover:text-white transition" aria-label="Sluiten">
-              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
-            </button>
+          <div v-if="searchOpen" class="relative">
+            <div class="flex items-center gap-2 bg-white/10 rounded-full px-3 py-1.5">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white/60 shrink-0"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+              <input
+                ref="searchInput"
+                v-model="searchQuery"
+                type="text"
+                placeholder="Zoeken..."
+                class="bg-transparent text-sm text-white placeholder-white/50 outline-none w-44"
+                @keydown.escape="closeSearch"
+              />
+              <button @click="closeSearch" class="text-white/50 hover:text-white transition" aria-label="Sluiten">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+              </button>
+            </div>
+
+            <Transition name="dropdown">
+              <div
+                v-if="results.length"
+                class="absolute right-0 top-12 w-72 bg-white text-gray-800 rounded-xl shadow-lg overflow-hidden z-50"
+              >
+                <button
+                  v-for="page in results"
+                  :key="page.route"
+                  class="w-full px-4 py-3 flex items-start gap-3 hover:bg-slate-50 transition text-left"
+                  @click="navigate(page.route)"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mt-0.5 text-slate-400 shrink-0"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                  <div>
+                    <p class="text-sm font-medium">{{ page.label }}</p>
+                    <p class="text-xs text-gray-400">{{ page.description }}</p>
+                  </div>
+                </button>
+              </div>
+            </Transition>
           </div>
         </Transition>
 
@@ -118,11 +169,10 @@ function formatTime(date: Date) {
 
 .search-enter-active,
 .search-leave-active {
-  transition: opacity 0.15s ease, width 0.2s ease;
+  transition: opacity 0.15s ease;
 }
 .search-enter-from,
 .search-leave-to {
   opacity: 0;
-  width: 0;
 }
 </style>
