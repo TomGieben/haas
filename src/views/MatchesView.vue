@@ -13,7 +13,7 @@ const router = useRouter();
 <template>
   <div class="bg-white rounded-card shadow-card p-8">
     <h1 class="text-2xl font-bold text-slate-900 mb-1">Je matches in de buurt</h1>
-    <p class="text-sm text-slate-500 mb-6">Op basis van je profiel hebben we deze personen gevonden.</p>
+    <p class="text-sm text-slate-500 mb-6">Op basis van je profiel hebben we deze woningen gevonden.</p>
 
     <hr class="mb-6 border-slate-100" />
 
