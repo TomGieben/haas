@@ -1,5 +1,21 @@
 <script setup lang="ts">
+import { ref } from 'vue';
 import NavTabs from './NavTabs.vue';
+
+const notificationsOpen = ref(false);
+
+const notification = {
+  message: 'Aanvraag ingediend',
+  timestamp: new Date(),
+};
+
+function formatDate(date: Date) {
+  return date.toLocaleDateString('nl-NL', { day: 'numeric', month: 'long', year: 'numeric' });
+}
+
+function formatTime(date: Date) {
+  return date.toLocaleTimeString('nl-NL', { hour: '2-digit', minute: '2-digit' });
+}
 </script>
 
 <template>
@@ -24,11 +40,48 @@ import NavTabs from './NavTabs.vue';
         <button class="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition" aria-label="Zoeken">
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
         </button>
-        <button class="relative w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition" aria-label="Notificaties">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
-          <span class="absolute top-1.5 right-1.5 w-2 h-2 bg-brand-orange rounded-full"></span>
-        </button>
+
+        <div class="relative">
+          <button
+            class="relative w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition"
+            aria-label="Notificaties"
+            @click="notificationsOpen = !notificationsOpen"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
+            <span class="absolute top-1.5 right-1.5 w-2 h-2 bg-brand-orange rounded-full"></span>
+          </button>
+
+          <Transition name="dropdown">
+            <div
+              v-if="notificationsOpen"
+              class="absolute right-0 top-12 w-72 bg-white text-gray-800 rounded-xl shadow-lg overflow-hidden z-50"
+            >
+              <div class="px-4 py-3 border-b border-gray-100 text-xs font-semibold uppercase tracking-wide text-gray-400">
+                Notificaties
+              </div>
+              <div class="px-4 py-3 flex items-start gap-3">
+                <div class="mt-0.5 w-2 h-2 rounded-full bg-brand-orange shrink-0"></div>
+                <div>
+                  <p class="text-sm font-medium">{{ notification.message }}</p>
+                  <p class="text-xs text-gray-400 mt-0.5">{{ formatDate(notification.timestamp) }} om {{ formatTime(notification.timestamp) }}</p>
+                </div>
+              </div>
+            </div>
+          </Transition>
+        </div>
       </div>
     </div>
   </header>
 </template>
+
+<style scoped>
+.dropdown-enter-active,
+.dropdown-leave-active {
+  transition: opacity 0.15s ease, transform 0.15s ease;
+}
+.dropdown-enter-from,
+.dropdown-leave-to {
+  opacity: 0;
+  transform: translateY(-6px);
+}
+</style>
