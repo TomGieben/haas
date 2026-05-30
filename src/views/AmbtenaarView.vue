@@ -1,23 +1,8 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+import { panden } from '../data/panden';
 
-interface Pand {
-  id: string;
-  straat: string;
-  huisnummer: string;
-  geinteresseerd: number;
-}
-
-const panden = ref<Pand[]>([
-  { id: '1', straat: 'Velperweg', huisnummer: '12', geinteresseerd: 8 },
-  { id: '2', straat: 'Kronenburgsingel', huisnummer: '34A', geinteresseerd: 5 },
-  { id: '3', straat: 'Eusebiusbuitensingel', huisnummer: '7', geinteresseerd: 12 },
-  { id: '4', straat: 'Hommelseweg', huisnummer: '91', geinteresseerd: 3 },
-  { id: '5', straat: 'Zijpendaalseweg', huisnummer: '55B', geinteresseerd: 7 },
-  { id: '6', straat: 'Parkstraat', huisnummer: '18', geinteresseerd: 2 },
-]);
-
-const selected = ref<Pand | null>(null);
+const router = useRouter();
 </script>
 
 <template>
@@ -38,7 +23,7 @@ const selected = ref<Pand | null>(null);
           v-for="pand in panden"
           :key="pand.id"
           class="px-6 py-4 flex items-center justify-between hover:bg-slate-50 transition cursor-pointer"
-          @click="selected = pand"
+          @click="router.push(`/ambtenaar/${pand.id}`)"
         >
           <div class="flex items-center gap-4">
             <div class="w-9 h-9 rounded-full bg-navy/10 flex items-center justify-center shrink-0">
@@ -46,7 +31,7 @@ const selected = ref<Pand | null>(null);
             </div>
             <div>
               <p class="text-sm font-semibold text-slate-800">{{ pand.straat }} {{ pand.huisnummer }}</p>
-              <p class="text-xs text-slate-400">Arnhem</p>
+              <p class="text-xs text-slate-400">{{ pand.wijk }} · Arnhem</p>
             </div>
           </div>
           <div class="flex items-center gap-2 text-sm text-slate-600">
@@ -57,58 +42,5 @@ const selected = ref<Pand | null>(null);
         </li>
       </ul>
     </div>
-
-    <Transition name="slide-up">
-      <div
-        v-if="selected"
-        class="fixed inset-0 bg-black/30 z-40 flex items-end sm:items-center justify-center"
-        @click.self="selected = null"
-      >
-        <div class="bg-white rounded-t-2xl sm:rounded-2xl w-full sm:max-w-md p-6 shadow-xl">
-          <div class="flex items-center justify-between mb-4">
-            <h2 class="font-bold text-slate-900">{{ selected.straat }} {{ selected.huisnummer }}</h2>
-            <button @click="selected = null" class="text-slate-400 hover:text-slate-600 transition">
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
-            </button>
-          </div>
-          <dl class="space-y-2 text-sm mb-6">
-            <div class="flex justify-between">
-              <dt class="text-slate-500">Straat</dt>
-              <dd class="font-medium text-slate-800">{{ selected.straat }}</dd>
-            </div>
-            <div class="flex justify-between">
-              <dt class="text-slate-500">Huisnummer</dt>
-              <dd class="font-medium text-slate-800">{{ selected.huisnummer }}</dd>
-            </div>
-            <div class="flex justify-between">
-              <dt class="text-slate-500">Stad</dt>
-              <dd class="font-medium text-slate-800">Arnhem</dd>
-            </div>
-            <div class="flex justify-between">
-              <dt class="text-slate-500">Geïnteresseerden</dt>
-              <dd class="font-semibold text-slate-800">{{ selected.geinteresseerd }} personen</dd>
-            </div>
-          </dl>
-          <button
-            class="w-full bg-navy text-white rounded-xl py-2.5 text-sm font-semibold hover:bg-navy-deep transition"
-            @click="selected = null"
-          >
-            Aanvragen bekijken
-          </button>
-        </div>
-      </div>
-    </Transition>
   </div>
 </template>
-
-<style scoped>
-.slide-up-enter-active,
-.slide-up-leave-active {
-  transition: opacity 0.2s ease, transform 0.2s ease;
-}
-.slide-up-enter-from,
-.slide-up-leave-to {
-  opacity: 0;
-  transform: translateY(16px);
-}
-</style>
