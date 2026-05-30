@@ -27,7 +27,6 @@ const isLoading = ref(false);
 const modalOpen = ref(false);
 
 const criteria = [
-  { label: 'Inschrijfduur',         score: 8 },
   { label: 'Inkomensmatch',         score: 7 },
   { label: 'Gezinssamenstelling',   score: 9 },
   { label: 'Urgentie',              score: 6 },
