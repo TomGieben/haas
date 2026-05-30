@@ -7,6 +7,7 @@ const routes = [
   { path: '/matches', name: 'matches', component: () => import('../views/MatchesView.vue') },
   { path: '/woongenoten', name: 'woongenoten', component: () => import('../views/HousematesView.vue') },
   { path: '/voortgang', name: 'voortgang', component: () => import('../views/ProgressView.vue') },
+  { path: '/ambtenaar', name: 'ambtenaar', component: () => import('../views/AmbtenaarView.vue') },
 ];
 
 export const router = createRouter({

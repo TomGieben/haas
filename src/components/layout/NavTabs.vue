@@ -1,11 +1,25 @@
 <script setup lang="ts">
-const tabs = [
+import { computed } from 'vue';
+import { useRoleStore } from '../../stores/role';
+
+const roleStore = useRoleStore();
+
+const woningzoekendeTabs = [
   { to: '/profiel', label: 'Profiel' },
   { to: '/locaties', label: 'Locaties' },
   { to: '/matches', label: 'Matches' },
   { to: '/woongenoten', label: 'Woongenoten' },
   { to: '/voortgang', label: 'Voortgang' },
 ];
+
+const ambtenaarTabs = [
+  { to: '/ambtenaar', label: 'Aanvragen' },
+  { to: '/locaties', label: 'Locaties' },
+];
+
+const tabs = computed(() =>
+  roleStore.role === 'ambtenaar' ? ambtenaarTabs : woningzoekendeTabs
+);
 </script>
 
 <template>

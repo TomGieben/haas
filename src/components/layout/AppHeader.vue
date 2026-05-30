@@ -2,11 +2,27 @@
 import { ref, nextTick, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import NavTabs from './NavTabs.vue';
+import { useRoleStore } from '../../stores/role';
+import type { Role } from '../../stores/role';
+
+const roleStore = useRoleStore();
 
 const router = useRouter();
 
 const notificationsOpen = ref(false);
+const roleMenuOpen = ref(false);
 const searchOpen = ref(false);
+
+const roles: { value: Role; label: string }[] = [
+  { value: 'woningzoekende', label: 'Woningzoekende' },
+  { value: 'ambtenaar', label: 'Ambtenaar' },
+];
+
+function switchRole(r: Role) {
+  roleStore.setRole(r);
+  roleMenuOpen.value = false;
+  router.push(r === 'ambtenaar' ? '/ambtenaar' : '/profiel');
+}
 const searchInput = ref<HTMLInputElement | null>(null);
 const searchQuery = ref('');
 
@@ -122,6 +138,44 @@ function formatTime(date: Date) {
         >
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
         </button>
+
+        <div class="relative">
+          <button
+            class="relative flex items-center gap-1.5 h-9 rounded-full bg-white/10 hover:bg-white/20 px-3 transition"
+            :aria-label="`Rol: ${roleStore.role}`"
+            @click="roleMenuOpen = !roleMenuOpen"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <span class="text-xs font-semibold hidden sm:inline">
+              {{ roleStore.role === 'ambtenaar' ? 'Ambtenaar' : 'Woningzoekende' }}
+            </span>
+          </button>
+
+          <Transition name="dropdown">
+            <div
+              v-if="roleMenuOpen"
+              class="absolute right-0 top-12 w-52 bg-white text-gray-800 rounded-xl shadow-lg overflow-hidden z-50"
+            >
+              <div class="px-4 py-3 border-b border-gray-100 text-xs font-semibold uppercase tracking-wide text-gray-400">
+                Wissel van rol
+              </div>
+              <button
+                v-for="r in roles"
+                :key="r.value"
+                class="w-full px-4 py-3 flex items-center gap-3 hover:bg-slate-50 transition text-left"
+                :class="{ 'opacity-40 pointer-events-none': roleStore.role === r.value }"
+                @click="switchRole(r.value)"
+              >
+                <span
+                  class="w-2 h-2 rounded-full shrink-0"
+                  :class="roleStore.role === r.value ? 'bg-brand-orange' : 'bg-slate-200'"
+                ></span>
+                <span class="text-sm font-medium">{{ r.label }}</span>
+                <svg v-if="roleStore.role === r.value" xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="ml-auto text-brand-orange"><polyline points="20 6 9 17 4 12"/></svg>
+              </button>
+            </div>
+          </Transition>
+        </div>
 
         <div class="relative">
           <button
