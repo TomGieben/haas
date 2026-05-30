@@ -101,7 +101,7 @@ function formatTime(date: Date) {
                 type="text"
                 placeholder="Zoeken..."
                 class="bg-transparent text-sm text-white placeholder-white/50 outline-none w-44"
-                @keydown.escape="closeSearch"
+                @keydown.esc="closeSearch"
               />
               <button @click="closeSearch" class="text-white/50 hover:text-white transition" aria-label="Sluiten">
                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
@@ -120,10 +120,10 @@ function formatTime(date: Date) {
                   @click="navigate(page.route)"
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mt-0.5 text-slate-400 shrink-0"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-                  <div>
-                    <p class="text-sm font-medium">{{ page.label }}</p>
-                    <p class="text-xs text-gray-400">{{ page.description }}</p>
-                  </div>
+                  <span class="flex flex-col text-left">
+                    <span class="text-sm font-medium">{{ page.label }}</span>
+                    <span class="text-xs text-gray-400">{{ page.description }}</span>
+                  </span>
                 </button>
               </div>
             </Transition>
@@ -210,7 +210,7 @@ function formatTime(date: Date) {
   </header>
 </template>
 
-<style scoped>
+<style>
 .dropdown-enter-active,
 .dropdown-leave-active {
   transition: opacity 0.15s ease, transform 0.15s ease;
