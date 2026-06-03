@@ -1,10 +1,64 @@
 <script setup lang="ts">
-import { computed } from 'vue';
-import { useRoute } from 'vue-router';
+import { ref, nextTick, computed } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 import NavTabs from './NavTabs.vue';
 
 const route = useRoute();
-const homeLink = computed(() => (route.path.startsWith('/officer') ? '/officer/overview' : '/profiel'));
+const router = useRouter();
+
+const homeLink = computed(() =>
+  route.path.startsWith('/officer') ? '/officer/overview' : '/profiel',
+);
+
+const notificationsOpen = ref(false);
+const searchOpen = ref(false);
+const searchInput = ref<HTMLInputElement | null>(null);
+const searchQuery = ref('');
+
+const pages = [
+  { label: 'Profiel', description: 'Jouw profiel en voorkeuren', route: '/profiel', keywords: 'profiel naam leeftijd' },
+  { label: 'Locaties', description: 'Wijken en beschikbare woningen', route: '/locaties', keywords: 'locatie wijk woning arnhem kaart' },
+  { label: 'Matches', description: 'Gevonden matches op basis van je profiel', route: '/matches', keywords: 'matches personen buurt' },
+  { label: 'Woongenoten', description: 'Swipe door mogelijke woongenoten', route: '/woongenoten', keywords: 'woongenoten swipe mensen' },
+  { label: 'Voortgang', description: 'Status van je aanvraag', route: '/voortgang', keywords: 'voortgang aanvraag status stappen' },
+];
+
+const results = computed(() => {
+  const q = searchQuery.value.trim().toLowerCase();
+  if (!q) return [];
+  return pages.filter(p =>
+    `${p.label} ${p.description} ${p.keywords}`.toLowerCase().includes(q)
+  );
+});
+
+async function openSearch() {
+  searchOpen.value = true;
+  await nextTick();
+  searchInput.value?.focus();
+}
+
+function closeSearch() {
+  searchOpen.value = false;
+  searchQuery.value = '';
+}
+
+function navigate(route: string) {
+  router.push(route);
+  closeSearch();
+}
+
+const notification = {
+  message: 'Aanvraag ingediend',
+  timestamp: new Date(),
+};
+
+function formatDate(date: Date) {
+  return date.toLocaleDateString('nl-NL', { day: 'numeric', month: 'long', year: 'numeric' });
+}
+
+function formatTime(date: Date) {
+  return date.toLocaleTimeString('nl-NL', { hour: '2-digit', minute: '2-digit' });
+}
 </script>
 
 <template>
@@ -26,14 +80,104 @@ const homeLink = computed(() => (route.path.startsWith('/officer') ? '/officer/o
       <NavTabs />
 
       <div class="flex items-center gap-3">
-        <button class="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition" aria-label="Zoeken">
+        <Transition name="search">
+          <div v-if="searchOpen" class="relative">
+            <div class="flex items-center gap-2 bg-white/10 rounded-full px-3 py-1.5">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white/60 shrink-0"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+              <input
+                ref="searchInput"
+                v-model="searchQuery"
+                type="text"
+                placeholder="Zoeken..."
+                class="bg-transparent text-sm text-white placeholder-white/50 outline-none w-44"
+                @keydown.escape="closeSearch"
+              />
+              <button @click="closeSearch" class="text-white/50 hover:text-white transition" aria-label="Sluiten">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+              </button>
+            </div>
+
+            <Transition name="dropdown">
+              <div
+                v-if="results.length"
+                class="absolute right-0 top-12 w-72 bg-white text-gray-800 rounded-xl shadow-lg overflow-hidden z-50"
+              >
+                <button
+                  v-for="page in results"
+                  :key="page.route"
+                  class="w-full px-4 py-3 flex items-start gap-3 hover:bg-slate-50 transition text-left"
+                  @click="navigate(page.route)"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mt-0.5 text-slate-400 shrink-0"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                  <div>
+                    <p class="text-sm font-medium">{{ page.label }}</p>
+                    <p class="text-xs text-gray-400">{{ page.description }}</p>
+                  </div>
+                </button>
+              </div>
+            </Transition>
+          </div>
+        </Transition>
+
+        <button
+          v-if="!searchOpen"
+          class="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition"
+          aria-label="Zoeken"
+          @click="openSearch"
+        >
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
         </button>
-        <button class="relative w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition" aria-label="Notificaties">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
-          <span class="absolute top-1.5 right-1.5 w-2 h-2 bg-brand-orange rounded-full"></span>
-        </button>
+
+        <div class="relative">
+          <button
+            class="relative w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition"
+            aria-label="Notificaties"
+            @click="notificationsOpen = !notificationsOpen"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
+            <span class="absolute top-1.5 right-1.5 w-2 h-2 bg-brand-orange rounded-full"></span>
+          </button>
+
+          <Transition name="dropdown">
+            <div
+              v-if="notificationsOpen"
+              class="absolute right-0 top-12 w-72 bg-white text-gray-800 rounded-xl shadow-lg overflow-hidden z-50"
+            >
+              <div class="px-4 py-3 border-b border-gray-100 text-xs font-semibold uppercase tracking-wide text-gray-400">
+                Notificaties
+              </div>
+              <div class="px-4 py-3 flex items-start gap-3">
+                <div class="mt-0.5 w-2 h-2 rounded-full bg-brand-orange shrink-0"></div>
+                <div>
+                  <p class="text-sm font-medium">{{ notification.message }}</p>
+                  <p class="text-xs text-gray-400 mt-0.5">{{ formatDate(notification.timestamp) }} om {{ formatTime(notification.timestamp) }}</p>
+                </div>
+              </div>
+            </div>
+          </Transition>
+        </div>
       </div>
     </div>
   </header>
 </template>
+
+<style scoped>
+.dropdown-enter-active,
+.dropdown-leave-active {
+  transition: opacity 0.15s ease, transform 0.15s ease;
+}
+.dropdown-enter-from,
+.dropdown-leave-to {
+  opacity: 0;
+  transform: translateY(-6px);
+}
+
+.search-enter-active,
+.search-leave-active {
+  transition: opacity 0.15s ease;
+}
+.search-enter-from,
+.search-leave-to {
+  opacity: 0;
+}
+</style>

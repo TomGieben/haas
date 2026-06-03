@@ -6,7 +6,7 @@ import { useProfileStore } from './profile';
 import type { Match } from '../domain/Match';
 
 export const useMatchesStore = defineStore('matches', () => {
-  const selectedId = ref<string | null>('lisa');
+  const selectedId = ref<string | null>('klarendal-appartement');
 
   const ranked = computed<Match[]>(() => {
     const profile = useProfileStore();
