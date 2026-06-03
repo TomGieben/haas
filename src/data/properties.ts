@@ -1,0 +1,48 @@
+import { Property } from '../domain/Property';
+
+export const properties: Property[] = [
+  new Property({
+    id: 'klarendalseweg-142',
+    address: 'Klarendalseweg 142',
+    district: 'Klarendal',
+    type: 'Eengezinswoning',
+    area: 95,
+    rent: 875,
+    availableFrom: '2026-07-15',
+    coords: [51.9925, 5.9168],
+    tags: ['Tuin', 'Kindvriendelijk', 'Dichtbij school'],
+  }),
+  new Property({
+    id: 'velperweg-58b',
+    address: 'Velperweg 58-B',
+    district: 'Velperpoort',
+    type: 'Appartement',
+    area: 72,
+    rent: 925,
+    availableFrom: '2026-08-01',
+    coords: [51.9881, 5.9192],
+    tags: ['Balkon', 'OV nabij'],
+  }),
+  new Property({
+    id: 'matsersingel-23',
+    address: 'Burg. Matsersingel 23',
+    district: 'Malburgen',
+    type: 'Hoekwoning',
+    area: 110,
+    rent: 1050,
+    availableFrom: '2026-09-01',
+    coords: [51.9665, 5.9275],
+    tags: ['Tuin', 'Garage', 'Rustige straat'],
+  }),
+  new Property({
+    id: 'schuytgraafplein-9',
+    address: 'Schuytgraafplein 9',
+    district: 'Schuytgraaf',
+    type: 'Appartement',
+    area: 68,
+    rent: 795,
+    availableFrom: '2026-07-01',
+    coords: [51.9418, 5.8554],
+    tags: ['Lift', 'Nieuwbouw', 'Energiezuinig'],
+  }),
+];

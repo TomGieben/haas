@@ -1,11 +1,16 @@
 <script setup lang="ts">
+import { computed } from 'vue';
+import { useRoute } from 'vue-router';
 import NavTabs from './NavTabs.vue';
+
+const route = useRoute();
+const homeLink = computed(() => (route.path.startsWith('/officer') ? '/officer/overview' : '/profiel'));
 </script>
 
 <template>
   <header class="bg-navy text-white relative">
     <div class="max-w-6xl mx-auto px-4 h-20 flex items-center justify-between">
-      <router-link to="/profiel" class="flex items-center gap-3 group">
+      <router-link :to="homeLink" class="flex items-center gap-3 group">
         <div class="w-11 h-11 rounded-xl bg-white flex items-center justify-center shadow-soft">
           <img src="/rabbit.svg" alt="HaaS" class="w-8 h-8" />
         </div>

@@ -1,11 +1,29 @@
 <script setup lang="ts">
-const tabs = [
+import { computed } from 'vue';
+import { useRoute } from 'vue-router';
+
+interface Tab {
+  to: string;
+  label: string;
+}
+
+const applicantTabs: Tab[] = [
   { to: '/profiel', label: 'Profiel' },
   { to: '/locaties', label: 'Locaties' },
   { to: '/matches', label: 'Matches' },
   { to: '/woongenoten', label: 'Woongenoten' },
   { to: '/voortgang', label: 'Voortgang' },
 ];
+
+const officerTabs: Tab[] = [
+  { to: '/officer/cases', label: 'Lopende zaken' },
+  { to: '/officer/overview', label: 'Overview' },
+];
+
+const route = useRoute();
+const tabs = computed<Tab[]>(() =>
+  route.path.startsWith('/officer') ? officerTabs : applicantTabs,
+);
 </script>
 
 <template>
