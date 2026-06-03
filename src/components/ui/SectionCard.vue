@@ -1,7 +1,9 @@
 <script setup lang="ts">
+import type { Component } from 'vue';
+
 defineProps<{
   title?: string;
-  icon?: string;
+  icon?: Component;
   subtitle?: string;
 }>();
 </script>
@@ -13,8 +15,9 @@ defineProps<{
         <div
           v-if="icon"
           class="w-9 h-9 rounded-xl bg-teal-soft text-teal flex items-center justify-center shrink-0"
-          v-html="icon"
-        />
+        >
+          <component :is="icon" :size="18" />
+        </div>
         <div>
           <h3 v-if="title" class="text-base font-bold text-slate-900 leading-tight">{{ title }}</h3>
           <p v-if="subtitle" class="text-xs text-slate-500 mt-0.5">{{ subtitle }}</p>

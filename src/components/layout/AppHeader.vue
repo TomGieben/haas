@@ -2,6 +2,9 @@
 import { ref, nextTick, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import NavTabs from './NavTabs.vue';
+import IconSearch from '../icons/IconSearch.vue';
+import IconClose from '../icons/IconClose.vue';
+import IconBell from '../icons/IconBell.vue';
 
 const route = useRoute();
 const router = useRouter();
@@ -83,7 +86,7 @@ function formatTime(date: Date) {
         <Transition name="search">
           <div v-if="searchOpen" class="relative">
             <div class="flex items-center gap-2 bg-white/10 rounded-full px-3 py-1.5">
-              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white/60 shrink-0"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+              <IconSearch :size="14" class="text-white/60 shrink-0" />
               <input
                 ref="searchInput"
                 v-model="searchQuery"
@@ -93,7 +96,7 @@ function formatTime(date: Date) {
                 @keydown.escape="closeSearch"
               />
               <button @click="closeSearch" class="text-white/50 hover:text-white transition" aria-label="Sluiten">
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+                <IconClose :size="14" />
               </button>
             </div>
 
@@ -108,7 +111,7 @@ function formatTime(date: Date) {
                   class="w-full px-4 py-3 flex items-start gap-3 hover:bg-slate-50 transition text-left"
                   @click="navigate(page.route)"
                 >
-                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mt-0.5 text-slate-400 shrink-0"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+                  <IconSearch :size="14" class="mt-0.5 text-slate-400 shrink-0" />
                   <div>
                     <p class="text-sm font-medium">{{ page.label }}</p>
                     <p class="text-xs text-gray-400">{{ page.description }}</p>
@@ -125,7 +128,7 @@ function formatTime(date: Date) {
           aria-label="Zoeken"
           @click="openSearch"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+          <IconSearch :size="16" />
         </button>
 
         <div class="relative">
@@ -134,7 +137,7 @@ function formatTime(date: Date) {
             aria-label="Notificaties"
             @click="notificationsOpen = !notificationsOpen"
           >
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg>
+            <IconBell :size="16" />
             <span class="absolute top-1.5 right-1.5 w-2 h-2 bg-brand-orange rounded-full"></span>
           </button>
 

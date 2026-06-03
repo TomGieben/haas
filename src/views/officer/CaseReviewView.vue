@@ -4,6 +4,7 @@ import { useCasesStore } from '../../stores/cases';
 import ReviewItemCard from '../../components/officer/ReviewItemCard.vue';
 import ReviewCounter from '../../components/officer/ReviewCounter.vue';
 import StatusBadge from '../../components/ui/StatusBadge.vue';
+import IconChevronLeft from '../../components/icons/IconChevronLeft.vue';
 import { ReviewDecision } from '../../domain/Enums';
 
 const props = defineProps<{ id: string }>();
@@ -23,7 +24,7 @@ function decide(itemId: string, decision: ReviewDecision) {
       :to="{ name: 'officer-case-detail', params: { id: caseItem.id } }"
       class="inline-flex items-center gap-1 text-sm font-semibold text-slate-600 hover:text-slate-900 mb-4"
     >
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+      <IconChevronLeft :size="14" :stroke-width="2.5" />
       Terug naar zaak detail
     </router-link>
 

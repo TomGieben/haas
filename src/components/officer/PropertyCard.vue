@@ -3,14 +3,13 @@ import { onMounted, onBeforeUnmount, ref } from 'vue';
 import L from 'leaflet';
 import SectionCard from '../ui/SectionCard.vue';
 import TagChip from '../ui/TagChip.vue';
+import IconHome from '../icons/IconHome.vue';
 import type { Property } from '../../domain/Property';
 
 const props = defineProps<{ property: Property }>();
 
 const mapEl = ref<HTMLElement | null>(null);
 let map: L.Map | null = null;
-
-const iconHome = `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9.5 12 3l9 6.5V21H3z"/><path d="M9 21V12h6v9"/></svg>`;
 
 function buildMarker(): L.DivIcon {
   return L.divIcon({
@@ -42,7 +41,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <SectionCard title="Pand" :icon="iconHome">
+  <SectionCard title="Pand" :icon="IconHome">
     <div ref="mapEl" class="w-full h-44 rounded-xl overflow-hidden border border-slate-200 mb-4" />
     <div class="text-sm font-semibold text-slate-900">{{ property.address }}</div>
     <div class="text-xs text-slate-500 mb-4">{{ property.district }}</div>

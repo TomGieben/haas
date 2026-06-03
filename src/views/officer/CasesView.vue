@@ -3,6 +3,7 @@ import { storeToRefs } from 'pinia';
 import { useRouter } from 'vue-router';
 import CaseStatusSummary from '../../components/officer/CaseStatusSummary.vue';
 import CaseCard from '../../components/officer/CaseCard.vue';
+import IconArrowRight from '../../components/icons/IconArrowRight.vue';
 import { useCasesStore } from '../../stores/cases';
 
 const store = useCasesStore();
@@ -28,7 +29,7 @@ function openCase(id: string) {
         class="text-sm font-semibold text-brand-orange hover:text-brand-orange-dark inline-flex items-center gap-1"
       >
         Bekijk overview
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        <IconArrowRight :size="14" :stroke-width="2.5" />
       </router-link>
     </div>
 

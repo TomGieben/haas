@@ -7,6 +7,9 @@ import BaseButton from '../../components/ui/BaseButton.vue';
 import HousemateChip from '../../components/officer/HousemateChip.vue';
 import PropertyCard from '../../components/officer/PropertyCard.vue';
 import AINarrativeCard from '../../components/officer/AINarrativeCard.vue';
+import IconUsers from '../../components/icons/IconUsers.vue';
+import IconChevronLeft from '../../components/icons/IconChevronLeft.vue';
+import IconArrowRight from '../../components/icons/IconArrowRight.vue';
 import { useCasesStore } from '../../stores/cases';
 import { housemates } from '../../data/housemates';
 import { properties } from '../../data/properties';
@@ -27,8 +30,6 @@ const chosen = computed(() =>
     : [],
 );
 
-const iconUsers = `<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>`;
-
 function startReview() {
   if (caseItem.value) {
     router.push({ name: 'officer-case-review', params: { id: caseItem.value.id } });
@@ -42,7 +43,7 @@ function startReview() {
       to="/officer/cases"
       class="inline-flex items-center gap-1 text-sm font-semibold text-slate-600 hover:text-slate-900 mb-4"
     >
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+      <IconChevronLeft :size="14" :stroke-width="2.5" />
       Terug naar lopende zaken
     </router-link>
 
@@ -61,14 +62,14 @@ function startReview() {
         </div>
         <BaseButton @click="startReview">
           HaaS review starten
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          <IconArrowRight :size="16" :stroke-width="2.5" />
         </BaseButton>
       </div>
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
       <div class="space-y-6">
-        <SectionCard title="Gekozen woongenoten" :icon="iconUsers" :subtitle="`${chosen.length} ${chosen.length === 1 ? 'woongenoot' : 'woongenoten'}`">
+        <SectionCard title="Gekozen woongenoten" :icon="IconUsers" :subtitle="`${chosen.length} ${chosen.length === 1 ? 'woongenoot' : 'woongenoten'}`">
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
             <HousemateChip v-for="h in chosen" :key="h.id" :housemate="h" />
             <p v-if="chosen.length === 0" class="text-sm text-slate-500 col-span-full">

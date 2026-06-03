@@ -1,13 +1,12 @@
 <script setup lang="ts">
 import type { Location } from '../../domain/Location';
+import IconMapPin from '../icons/IconMapPin.vue';
 
 defineProps<{
   locations: Location[];
   selectedId: string | null;
 }>();
 defineEmits<{ (e: 'select', id: string): void }>();
-
-const pinIcon = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>`;
 </script>
 
 <template>
@@ -22,7 +21,7 @@ const pinIcon = `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" str
           @click="$emit('select', loc.id)"
         >
           <span class="flex items-center gap-2 text-slate-800 font-medium text-sm">
-            <span class="text-teal" v-html="pinIcon" />
+            <IconMapPin :size="18" class="text-teal" />
             {{ loc.name }}
           </span>
           <span class="text-xs text-slate-500">{{ loc.availableHomes }} woningen</span>

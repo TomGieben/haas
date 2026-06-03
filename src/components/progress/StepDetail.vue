@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { ProgressStep } from '../../domain/ProgressStep';
 import BaseButton from '../ui/BaseButton.vue';
+import IconCheck from '../icons/IconCheck.vue';
 
 defineProps<{ step: ProgressStep; canPrev: boolean; canNext: boolean }>();
 defineEmits<{ (e: 'prev'): void; (e: 'next'): void }>();
@@ -10,7 +11,7 @@ defineEmits<{ (e: 'prev'): void; (e: 'next'): void }>();
   <div class="bg-white rounded-2xl border border-slate-100 p-6">
     <div class="flex items-center gap-2 mb-2">
       <span class="w-6 h-6 rounded-full bg-teal text-white flex items-center justify-center">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        <IconCheck :size="14" :stroke-width="3" />
       </span>
       <h3 class="font-bold text-slate-900">Stap {{ step.index }}: {{ step.title }}</h3>
       <span

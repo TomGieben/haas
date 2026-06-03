@@ -1,17 +1,20 @@
 <script setup lang="ts">
+import type { Component } from 'vue';
 import type { BadgeTone } from '../../domain/Enums';
 
 defineProps<{
   label: string;
   count: number;
-  icon?: string;
+  icon?: Component;
   tone?: BadgeTone;
 }>();
 </script>
 
 <template>
   <div class="stat-tile" :class="`stat-tile--${tone ?? 'slate'}`">
-    <div class="stat-tile__icon" v-if="icon" v-html="icon" />
+    <div class="stat-tile__icon" v-if="icon">
+      <component :is="icon" :size="18" />
+    </div>
     <div class="stat-tile__body">
       <div class="stat-tile__count">{{ count }}</div>
       <div class="stat-tile__label">{{ label }}</div>

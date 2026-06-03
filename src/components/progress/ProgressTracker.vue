@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { ProgressStep } from '../../domain/ProgressStep';
+import IconCheck from '../icons/IconCheck.vue';
 
 defineProps<{ steps: ProgressStep[]; currentIndex: number }>();
 defineEmits<{ (e: 'select', idx: number): void }>();
@@ -25,8 +26,8 @@ defineEmits<{ (e: 'select', idx: number): void }>();
             : 'bg-white border-slate-300 text-slate-400',
         ]"
       >
-        <svg v-if="step.isDone && i !== currentIndex" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-        <svg v-else-if="i === currentIndex" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        <IconCheck v-if="step.isDone && i !== currentIndex" :size="16" :stroke-width="3" />
+        <IconCheck v-else-if="i === currentIndex" :size="18" :stroke-width="2.5" />
         <template v-else>{{ step.index }}</template>
       </span>
       <span

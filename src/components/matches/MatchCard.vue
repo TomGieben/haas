@@ -2,6 +2,8 @@
 import type { Match } from '../../domain/Match';
 import MatchBadge from '../ui/MatchBadge.vue';
 import TagChip from '../ui/TagChip.vue';
+import IconBuilding from '../icons/IconBuilding.vue';
+import IconCheck from '../icons/IconCheck.vue';
 
 defineProps<{ match: Match; selected: boolean }>();
 defineEmits<{ (e: 'select', id: string): void }>();
@@ -16,7 +18,7 @@ defineEmits<{ (e: 'select', id: string): void }>();
   >
     <div class="flex items-start gap-4">
       <div class="w-12 h-12 rounded-xl bg-teal-soft text-teal flex items-center justify-center shrink-0" aria-hidden="true">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9v11h14V9"/><path d="M9 20v-5h6v5"/></svg>
+        <IconBuilding :size="22" />
       </div>
       <div class="flex-1 min-w-0">
         <div class="flex items-baseline gap-2">
@@ -35,7 +37,7 @@ defineEmits<{ (e: 'select', id: string): void }>();
           class="w-6 h-6 rounded-full bg-teal text-white flex items-center justify-center"
           aria-label="Geselecteerd"
         >
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          <IconCheck :size="14" :stroke-width="3" />
         </span>
       </div>
     </div>

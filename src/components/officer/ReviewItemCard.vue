@@ -1,12 +1,18 @@
 <script setup lang="ts">
+import { computed } from 'vue';
 import StatusBadge from '../ui/StatusBadge.vue';
+import IconCheck from '../icons/IconCheck.vue';
+import IconClose from '../icons/IconClose.vue';
+import { reviewCategoryIcons } from '../icons/reviewCategoryIcons';
 import { ReviewDecision } from '../../domain/Enums';
 import type { ReviewItem } from '../../domain/ReviewItem';
 
-defineProps<{ item: ReviewItem }>();
+const props = defineProps<{ item: ReviewItem }>();
 defineEmits<{
   (e: 'decide', id: string, decision: ReviewDecision): void;
 }>();
+
+const categoryIcon = computed(() => reviewCategoryIcons[props.item.category]);
 </script>
 
 <template>
@@ -18,7 +24,9 @@ defineEmits<{
     }"
   >
     <div class="flex items-start gap-3 mb-3">
-      <div class="review-item-card__icon" v-html="item.icon" />
+      <div class="review-item-card__icon">
+        <component :is="categoryIcon" :size="18" />
+      </div>
       <div class="flex-1 min-w-0">
         <div class="text-xs uppercase tracking-wide text-slate-500 font-semibold">
           {{ item.categoryLabel }}
@@ -39,7 +47,7 @@ defineEmits<{
         class="review-btn review-btn--reject"
         @click="$emit('decide', item.id, ReviewDecision.Rejected)"
       >
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        <IconClose :size="14" :stroke-width="2.5" />
         Afkeuren
       </button>
       <button
@@ -47,13 +55,13 @@ defineEmits<{
         class="review-btn review-btn--approve"
         @click="$emit('decide', item.id, ReviewDecision.Approved)"
       >
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        <IconCheck :size="14" :stroke-width="2.5" />
         Goedkeuren
       </button>
     </div>
     <div v-else class="text-xs font-semibold flex items-center gap-1.5" :class="item.isApproved ? 'text-emerald-700' : 'text-red-700'">
-      <svg v-if="item.isApproved" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-      <svg v-else width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      <IconCheck v-if="item.isApproved" :size="14" :stroke-width="2.5" />
+      <IconClose v-else :size="14" :stroke-width="2.5" />
       {{ item.isApproved ? 'Goedgekeurd' : 'Afgekeurd' }}
     </div>
   </div>

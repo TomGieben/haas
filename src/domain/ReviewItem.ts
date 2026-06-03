@@ -1,9 +1,4 @@
-import {
-  ReviewCategory,
-  ReviewDecision,
-  reviewCategoryLabels,
-  reviewCategoryIcons,
-} from './Enums';
+import { ReviewCategory, ReviewDecision, reviewCategoryLabels } from './Enums';
 
 export interface ReviewItemProps {
   id: string;
@@ -33,10 +28,6 @@ export class ReviewItem {
 
   get categoryLabel(): string {
     return reviewCategoryLabels[this.category];
-  }
-
-  get icon(): string {
-    return reviewCategoryIcons[this.category];
   }
 
   get isDecided(): boolean {

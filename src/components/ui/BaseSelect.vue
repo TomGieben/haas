@@ -1,10 +1,12 @@
 <script setup lang="ts" generic="T extends string">
+import type { Component } from 'vue';
+
 defineProps<{
   modelValue: T | undefined;
   options: { value: T; label: string }[];
   placeholder?: string;
   label?: string;
-  icon?: string;
+  icon?: Component;
 }>();
 defineEmits<{ (e: 'update:modelValue', v: T | undefined): void }>();
 </script>
@@ -12,7 +14,7 @@ defineEmits<{ (e: 'update:modelValue', v: T | undefined): void }>();
 <template>
   <label class="block">
     <span v-if="label" class="flex items-center gap-2 text-sm font-semibold text-slate-700 mb-2">
-      <span v-if="icon" class="text-navy" v-html="icon" />
+      <component :is="icon" v-if="icon" class="text-navy" />
       {{ label }}
     </span>
     <select
