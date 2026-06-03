@@ -7,6 +7,10 @@ const routes = [
   { path: '/matches', name: 'matches', component: () => import('../views/MatchesView.vue') },
   { path: '/woongenoten', name: 'woongenoten', component: () => import('../views/HousematesView.vue') },
   { path: '/voortgang', name: 'voortgang', component: () => import('../views/ProgressView.vue') },
+  { path: '/ambtenaar', name: 'ambtenaar', component: () => import('../views/AmbtenaarView.vue') },
+  { path: '/ambtenaar/:id', name: 'ambtenaar-case', component: () => import('../views/AmbtenaarCaseView.vue') },
+  { path: '/ambtenaar/:pandId/aanvrager/:personId', name: 'ambtenaar-aanvrager', component: () => import('../views/AmbtenaarWoningzoekendeView.vue') },
+  { path: '/ambtenaar/:pandId/vervolgstappen', name: 'ambtenaar-vervolgstappen', component: () => import('../views/VervolgstappenView.vue') },
 ];
 
 export const router = createRouter({
